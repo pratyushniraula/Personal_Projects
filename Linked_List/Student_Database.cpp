@@ -18,7 +18,7 @@ struct student
 
 void addStudent(student *&head, string name, string id, double gpa, unsigned int grade, unsigned int age);
 void deleteStudent(student *&head, string id);
-void editStudent(student *&head, string name, string id, double gpa, unsigned int grade, unsigned int age);
+void editStudent(student *&head, string name, string id, string newid, double gpa, unsigned int grade, unsigned int age);
 void PrintStudents(student *&head);
 
 int main(int argc, char const *argv[])
@@ -137,10 +137,25 @@ int main(int argc, char const *argv[])
             case 5:
                 /* exit (stops from automatically outputting default case)*/
                 cout << "Thank You! Program Terminated" << endl;
+                //delete pointers
+                while(head->next != nullptr){
+                    student *ptr = head;
+                    head = head->next;
+                    delete ptr;
+                }
+                delete head;
                 break;
 
             default:
                 cout << "Number is Out of Bounds" << endl;
+
+                //delete pointers
+                while(head->next != nullptr){
+                    student *ptr = head;
+                    head = head->next;
+                    delete ptr;
+                }
+                delete head;
                 break;
             }
         }
@@ -170,12 +185,20 @@ void deleteStudent(student *&head, string id)
 {
         student *ptr = head;//makes new pointer start from the beginning and search throughout the list
         student *ptr1 = head;//this will keep track of one before ptr you want to delete
-
-        while (ptr !=nullptr)
+        string StudentName;
+        
+        if(head->studentID == id){
+            StudentName = head->name;
+            head = head->next;
+            delete ptr;
+        }
+        
+        while (ptr != nullptr)
         {
             if (ptr->studentID == id)
             {
                 ptr1->next = ptr->next;
+                StudentName = ptr->name;
                 delete ptr;
             }
             else
@@ -184,7 +207,7 @@ void deleteStudent(student *&head, string id)
             ptr = ptr->next;
             }
         }
-        cout << "Student " << ptr->name << " Has Been Deleted." << endl;
+        cout << "Student " << StudentName << " Has Been Deleted." << endl;
 
 }
 
